@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Cache-Control" content="max-age=0">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="Description" content="APPLE">
+    <meta name="Keywords" content="APPLE">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>无标题文档</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+
+	<div id="maindiv" >
+		<div class="">
+			<audio id="music" loop autoplay src="audio/playMusic.mp3"></audio>
+		</div>
+       	<div id="Table" >
+        	<canvas class="canvas"></canvas>
+        </div>
+        <img id="computer" src="images/com.png" alt="The Tulip" style="display:none"/>
+        <img id="game" src="images/game.png" alt="The Tulip"  style="display:none"/>
+        <img id="user" src="images/user.png" alt="The Tulip"  style="display:none"/>
+        <ul class="GameBtns">
+        	<li class="FaPaiBtns">
+        		<div class="FaBtn">发牌</div>
+        	</li>
+        	<li class="Play2Btns">
+    	    	<div class="HitBtn">要牌</div>
+	        	<div class="Standtn">保持</div>
+        	</li>
+        </ul>
+        <ul class="GameScore">
+        	<li class="ComputerScore">电脑分数:<span></span></li>
+        	<li class="PlayScore">玩家分数:<span></span></li>
+        </ul>
+
+        <div class="title">
+            <div class="again">  
+                <div class="playWin"></div>
+                <div class="playTpeople"></div>
+                <div class="common playTcomputer">再来一局</div>
+                <div class="common playPaused">不玩了</div>
+            </div>     
+        </div> 
+
+    </div>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+﻿@media screen and (max-width: 1024px) {
+    html {
+        font-size: 160px;
+    }
+}
+@media screen and (max-width: 800px) {
+    html {
+        font-size: 125px;
+    }
+}
+@media screen and (max-width: 768px) {
+    html {
+        font-size: 120px;
+    }
+}
+@media screen and (max-width: 640px) {
+    html {
+        font-size: 100px;
+    }
+}
+@media screen and (max-width: 600px) {
+    html {
+        font-size: 93.75px;
+    }
+}
+@media screen and (max-width: 414px) {
+    html {
+        font-size: 64.6875px;
+    }
+}
+@media screen and (max-width: 412px) {
+    html {
+        font-size: 64.375px;
+    }
+}
+@media screen and (max-width: 393px) {
+    html {
+        font-size: 61.40625px; } }
+
+@media screen and (max-width: 384px) {
+    html {
+        font-size: 60px;
+    }
+}
+@media screen and (max-width: 375px) {
+    html {
+        font-size: 58.59375px;
+    }
+}
+@media screen and (max-width: 360px) {
+    html {
+        font-size: 56.25px;
+    }
+}
+@media screen and (max-width: 320px) {
+    html {
+        font-size: 50px;
+    }
+}
+*{
+    padding:0;
+    margin:0;
+    text-decoration: none;
+    list-style: none;
+    margin: 0 auto;
+    font-size: 100px;
+}
+body,html{
+    margin: 0px;
+    padding: 0px;
+    background-color: #000;
+    background-image:url("../images/Floor.jpg");
+    background-repeat: repeat;
+    background-position: top center;
+    background-attachment: scroll;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow:hidden;
+    overflow-y:auto;
+    -webkit-transform-style:preserve-3d;
+}
+#maindiv{
+    min-width:320px;
+    max-width:640px;
+}
+#Table{
+    width:95vw;
+    height:90vh;
+    margin:0 auto 0;
+    /*border:0.01rem solid #fff;*/
+}
+#Table .canvas{
+	background-color:#425263;
+}
+.GameBtns{
+	width:15vw;
+	height:100vh;
+	position:absolute;
+	top:0;
+	left:4vw;
+}
+.GameBtns li div{
+	font-size:0.16rem;
+}
+.FaPaiBtns{
+	width:100%;
+	height:5vh;
+	position:absolute;
+	left:0;
+}
+.Play2Btns{
+	width:100%;
+	height:12vh;
+	position:absolute;
+	left:0;
+}
+.FaPaiBtns .FaBtn,.Play2Btns div{
+	width:100%;
+	height:5vh;
+	line-height:5vh;
+	text-align:center;
+	 border: 0.01rem solid #4296c3;
+    /* background-color: #845968; */
+    box-shadow: 0px 0px 18px 9px #425263 inset;
+}
+.Play2Btns{
+	display:none;
+}
+.Play2Btns div{
+	height:4vh;
+	line-height:4vh;
+}
+.Play2Btns div.HitBtn{
+	margin-bottom:1vh;
+}
+.GameScore{
+	width:25vw;
+	height:100vh;
+	position:absolute;
+	top:0;
+	left:50%;
+	margin-left:-10vw;
+}
+.ComputerScore,.PlayScore{
+	width:100%;
+	height:5vh;
+	position:absolute;
+	left:0;
+	line-height:5vh;
+	font-size:0.2rem;
+	text-align:center;
+	color:#fff;
+	letter-spacing:0.01rem;
+}
+.ComputerScore{
+	/*display:none;*/
+}
+.ComputerScore span,
+.PlayScore span{
+	line-height:5vh;
+	font-size:0.2rem;	
+	margin-left:0.1rem;
+}
+.title{
+    width:100%;
+    height:100%;
+    background:rgba(67, 67, 67, 0.53);
+    position:fixed;
+    top:0;
+    left:0;
+    display:none;
+}
+.again{
+    width: 34vh;
+    height: 22vh;
+    padding: 2vh 5vh;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -22vh;
+    margin-top: -18vh;
+    border:1px solid #587695;
+    border-radius:3%;
+    line-height: 0.25rem;
+    font-size: 0.16rem;
+    background:rgba(255,255,255,0.6);
+}
+.again .playWin{
+    line-height: 6vh;
+    font-size: 0.3rem;
+    text-align:center;
+    color:red;
+    height:6vh;
+}
+.again .playTpeople{
+    line-height: 4vh;
+    font-size: 0.2rem;
+    text-align:center;
+    color:#555;
+    height:4vh;
+    margin:0 auto 0.5vh; 
+}
+.again .common{
+    height:4.5vh;
+    width:40%;
+    margin:0 auto 0.5vh; 
+    background:#fff;
+    border:1px solid #548569;
+    border-radius:3px;
+    line-height: 4.5vh;
+    font-size: 0.2rem;
+    text-align:center;
+}
+
+
