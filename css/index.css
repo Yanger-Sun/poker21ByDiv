@@ -1,11 +1,6 @@
-﻿@media screen and (max-width: 1024px) {
+﻿@media screen and (min-width: 768px) {
     html {
-        font-size: 160px;
-    }
-}
-@media screen and (max-width: 800px) {
-    html {
-        font-size: 125px;
+        font-size: 120px;
     }
 }
 @media screen and (max-width: 768px) {
@@ -80,88 +75,209 @@ body,html{
     overflow-y:auto;
     -webkit-transform-style:preserve-3d;
 }
-#maindiv{
+.maindiv{
     min-width:320px;
     max-width:640px;
 }
-#Table{
-    width:95vw;
-    height:90vh;
-    margin:0 auto 0;
-    /*border:0.01rem solid #fff;*/
+.gameLoading{
+    height: 100%;
+    width: 100%;
+    overflow: visible;
+    position: absolute;
+    z-index: 0;
+    top:0;
+    left:0;
 }
-#Table .canvas{
-	background-color:#425263;
+.gameTitle{
+    width: 40vh;
+    height: 35vh;
+    background: url(../images/gameTitle.png) no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 10vh;
+    left: 50%;
+    margin-left: -18vh;
 }
-.GameBtns{
-	width:15vw;
-	height:100vh;
-	position:absolute;
-	top:0;
-	left:4vw;
+.gameSeleBtn{
+    width:34vh;
+    height:20vh;
+    position:absolute;
+    left:50%;
+    margin-left:-17vh;
+    top:55vh;
 }
-.GameBtns li div{
-	font-size:0.16rem;
+.gameSeleBtn li{
+    width:70%;
+    height:4vh;
+    line-height:4vh;
+    color:#fff;
+    font-size:0.25rem;
+    margin:0 auto 1vh;
+    letter-spacing:0.01rem;
+    text-align:center;
+    border:1px solid #548569;
+    border-radius:3px;
 }
-.FaPaiBtns{
-	width:100%;
-	height:5vh;
-	position:absolute;
-	left:0;
+
+#Table {
+    left: 0;
+    background-attachment: scroll;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top center;
+    height: 100%;
+    width: 100%;
+    overflow: visible;
+    position: absolute;
+    z-index: 0;
+    display:none;
 }
-.Play2Btns{
-	width:100%;
-	height:12vh;
-	position:absolute;
-	left:0;
+#Table img{
+    width:0.66rem;
+    height:1rem;
 }
-.FaPaiBtns .FaBtn,.Play2Btns div{
-	width:100%;
-	height:5vh;
-	line-height:5vh;
-	text-align:center;
-	 border: 0.01rem solid #4296c3;
-    /* background-color: #845968; */
-    box-shadow: 0px 0px 18px 9px #425263 inset;
+.FaPaiZone{
+    width: 14vh;
+    height:21vh;
+    position: absolute;
+    left:50%;
+    margin-left: -7vh;
+    top:50%;
+    margin-top: -10vh;
 }
-.Play2Btns{
-	display:none;
+.FaPai{
+    width: 10vh;
+    height: 16vh;
+    margin:0 auto 1vh;
+    position:relative;
+    background-size: 100% 100%;
+    /*background-image: url("../images/pokerFan.jpg");*/
 }
-.Play2Btns div{
-	height:4vh;
-	line-height:4vh;
+.FaPai li{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 10vh;
+    height: 16vh;
+    background: url("../images/pokerFan.jpg") ;
+    background-size: 100% 100%;
 }
-.Play2Btns div.HitBtn{
-	margin-bottom:1vh;
+.FaPaiBtn{
+    width:0.66rem;
+    height:4vh;
+    margin:0 auto;
+    line-height: 4vh;
+    font-size:0.16rem;
+    color:#fff;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: inset 0rem 0rem 0.02rem #a6a0a0;     
 }
-.GameScore{
-	width:25vw;
-	height:100vh;
-	position:absolute;
-	top:0;
-	left:50%;
-	margin-left:-10vw;
+.play1Zone{
+    width:45vh;
+    height: 25vh;
+    padding:0 1vh;
+    position: absolute;
+    left:50%;
+    margin-left:-22.5vh;
+    top:0.8rem;
+    box-shadow: 0rem 0rem 0.06rem #ffffff;
 }
-.ComputerScore,.PlayScore{
-	width:100%;
-	height:5vh;
-	position:absolute;
-	left:0;
-	line-height:5vh;
-	font-size:0.2rem;
-	text-align:center;
-	color:#fff;
-	letter-spacing:0.01rem;
+.play1{
+    width:100%;
+    height:19vh;
+    margin: 0 auto;
+    position: relative;
+    /*background-image: url("../images/pokerFan.jpg");*/
+    /*background-size: 100% 100%;*/
 }
-.ComputerScore{
-	/*display:none;*/
+.play1Zone span{
+    width:0.86rem;
+    height:0.25rem;
+    line-height: 0.25rem;
+    font-size: 0.16rem;
+    color:#fff;
+    text-align: center;
+    display: block;
 }
-.ComputerScore span,
-.PlayScore span{
-	line-height:5vh;
-	font-size:0.2rem;	
-	margin-left:0.1rem;
+.play1Btn,
+.play2Btn
+{
+    width:100%;
+    position: absolute;
 }
+.play1Btn{
+    right:50%;
+    margin-right:-22.5vh;
+    bottom:-4vh;
+}
+.play2Btn{
+    left:50%;
+    margin-left:-22.5vh;
+    top:-4vh;
+}
+.play1Btn li,
+.play2Btn li{
+    /*width: 0.66rem;
+    height: 0.3rem;*/
+    width:40%;
+    height:3vh;
+    line-height: 3vh;
+    float:left;
+    margin:0 5%;
+    color:#fff;
+    font-size: 0.16rem;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 0.05rem;
+    box-shadow: inset 0rem 0rem 0.02rem #a6a0a0; 
+
+}
+
+.play2Zone{
+    width:45vh;
+    height: 25vh;
+    padding:0 1vh;
+    position: absolute;
+    left:50%;
+    margin-left:-22.5vh;
+    bottom:0.8rem;
+    box-shadow: 0rem 0rem 0.06rem #ffffff;
+}
+.play2{
+    width:100%;
+    height:19vh;
+    margin: 0 auto;
+    position:relative;
+}
+.play2Zone span{
+    width:0.86rem;
+    height:0.25rem;
+    line-height: 0.25rem;
+    font-size: 0.16rem;
+    color:#fff;
+    text-align: center;
+    display: block;
+}
+
+.play1 li,
+.play2 li{
+    width: 14vh;
+    height: 19vh;
+    position: absolute;
+    top:0;
+    left:0;
+    background-size: 100% 100%;
+}
+
+.playBtn{
+    display:none;
+}
+.playBtn .playHit.disabled{
+    box-shadow: inset 0rem 0rem 0.02rem #ccc;
+    color:#919191; 
+}
+
 .title{
     width:100%;
     height:100%;
@@ -193,14 +309,6 @@ body,html{
     color:red;
     height:6vh;
 }
-.again .playTpeople{
-    line-height: 4vh;
-    font-size: 0.2rem;
-    text-align:center;
-    color:#555;
-    height:4vh;
-    margin:0 auto 0.5vh; 
-}
 .again .common{
     height:4.5vh;
     width:40%;
@@ -212,5 +320,47 @@ body,html{
     font-size: 0.2rem;
     text-align:center;
 }
-
-
+.rules{
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	display:none;
+}
+.rulesMiddle{
+	width:40vh;
+	height:50vh;
+	position:absolute;
+	top:50%;
+	margin-top:-25vh;
+	left:50%;
+	margin-left:-20vh;
+}
+.rulesTitle{
+	line-height:6vh;
+	height:6vh;
+	font-size:0.4rem;
+	padding-bottom:0.02rem;
+	color:#fff;
+	border-bottom:0.01rem solid #fff;
+	text-align:center;
+	margin-bottom:0.1rem;
+}
+.rulesInfo{
+	font-size:0.25rem;
+	line-height:0.38rem;
+	color:#fff;
+}
+.rulesClose{
+	width:10vw;
+	height:10vw;
+	position:absolute;
+	background:#fff;
+	color:#000;
+	top:5vw;
+	left:5vw;
+	font-size:0.2rem;
+	line-height:10vw;
+	text-align:center;
+}

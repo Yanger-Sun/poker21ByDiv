@@ -2,6 +2,98 @@
  * Created by Administrator on 2017/10/12.
  */
 
+var num = 0;
+    var the_images = [
+	"images/b1.png",
+	"images/b2.png",
+	"images/b3.png",
+	"images/b4.png",
+	"images/b5.png",
+	"images/b6.png",
+	"images/b7.png",
+	"images/b8.png",
+	"images/b9.png",
+	"images/b10.png",
+	"images/b11.png",
+	"images/b12.png",
+	"images/b13.png",
+	"images/BigBoss.png",
+	"images/Floor.jpg",
+	"images/gameTitle.png",
+	"images/icon.png",
+	"images/smallBoss.png",
+	"images/h1.png",
+	"images/h2.png",
+	"images/h3.png",
+	"images/h4.png",
+	"images/h5.png",
+	"images/h6.png",
+	"images/h7.png",
+	"images/h8.png",
+	"images/h9.png",
+	"images/h10.png",
+	"images/h11.png",
+	"images/h12.png",
+	"images/h13.png",
+	"images/s1.png",
+	"images/s2.png",
+	"images/s3.png",
+	"images/s4.png",
+	"images/s5.png",
+	"images/s6.png",
+	"images/s7.png",
+	"images/s8.png",
+	"images/s9.png",
+	"images/s10.png",
+	"images/s11.png",
+	"images/s12.png",
+	"images/s13.png",
+	"images/k1.png",
+	"images/k2.png",
+	"images/k3.png",
+	"images/k4.png",
+	"images/k5.png",
+	"images/k6.png",
+	"images/k7.png",
+	"images/k8.png",
+	"images/k9.png",
+	"images/k10.png",
+	"images/k11.png",
+	"images/k12.png",
+	"images/k13.png",
+	];	
+
+    jQuery.imgpreload(the_images,
+    {
+        each: function()
+        {
+		
+            var status = $(this).data('loaded')?'success':'error';
+			
+            if (status == "success") {                
+				++num;
+			
+				$("#lodingnum").html((num/the_images.length*100).toFixed(0)+"%");				               
+            }
+        },
+        all: function()
+        {
+			$("#lodingnum").html("100%");
+			document.getElementById('loading').style.display="none";
+				
+		
+	        document.addEventListener("WeixinJSBridgeReady", function () { 
+				if(document.getElementById('loading').style.display=="none"){
+  					//机器人 及 其右侧标题 处
+				}
+       
+    }, false); 
+			
+		
+			
+        }
+    });
+
 (function rotate(){
    var orientation=window.orientation;
    if(orientation==90||orientation==-90){
@@ -14,55 +106,13 @@
    };
 })()
 
-var canvas = $(".canvas")[0];
 var audio = $("#music")[0];
-var canW = $(document).width() * 0.95;
-var canH = $(document).height() * 0.9;
-$(".canvas").attr("width",canW);
-$(".canvas").attr("height",canH);
-
-var ctxt = canvas.getContext("2d");
-
-var zonesWidth = (canW/14) * 10.5;
-var zonesHeight = canH/4;
-
-var zoneLeft = canW/14;
-var zoneTop = zonesHeight/4;
-
-//
-$(".ComputerScore").css("top",zoneTop + zonesHeight);
-$(".PlayScore").css("top",zoneTop*2 + zonesHeight*2);
-
-var PaiArr = []; //PaiArr = [{num:4,hs:"s"},{num:6,hs:"h"},...];
+var AI = true;
+var PaiArr = []; //PaiArr = [{num:4,hs:"s"},{num:6,hs:"h"},...]
 var hs = ['h','b','s','k'];//花色代表  红桃：h  梅花：b  方块：s  黑桃：k
-var computerArr = [];//电脑的牌
-var play2Arr = [];//玩家的牌
-var computerFlag = true;//若为true，则表示电脑可以继续选牌；
-var play2Flag = true;//若为true，则表示玩家可以被点击
-
-//绘制区域的方法
-function makeZones(x,y){
-    ctxt.strokeStyle="#fff";
-    ctxt.lineWidth="1";
-    ctxt.strokeRect(x,y,zonesWidth + 0.5,zonesHeight + 0.5);
-}
-
-//绘制想对应区域的头像
-function makeTx(imgId,x,y,w,h){
-	var img=document.getElementById(imgId);
-	ctxt.drawImage(img,x,y,w,h);
-}
-
-//获取数组中最大值
-function sortNumber(a,b){
-	return a - b
-}
-
-
-
-//随机生成扑克牌顺序
-function makeRandomPai(){
-	PaiArr = [];
+//生成扑克牌顺序
+function makePai(){
+    PaiArr = [];
     for(var i=0;i<52;i++){
         var PaiArrHas = false;//判断数组中有没有存在已有的牌
         var num = Math.ceil(Math.random()*13);//扑克牌对应的数字
@@ -83,375 +133,497 @@ function makeRandomPai(){
         }
     }
 }
-
-//绘制随机扑克牌至发牌区域
-function drawPai(){
-	$.each(PaiArr,function(i,v){
-		var PaiBj = "images/" + v.hs + v.num + ".png";
-		var paiX = zoneLeft * 4 + 0.5;
-		var paiY = (zoneTop * 2 + zonesHeight) +0.5;
-		drawPaiToView(PaiBj,paiX,paiY,i)
-	})
+//绘制随机扑克牌
+function Draw(PaiArr){
+    $(".FaPai").html("");
+    $(PaiArr).each(function (i,v) {
+        $("<li>").attr({"data-num":v.num,"data-hs":v.hs}).prependTo($(".FaPai"));
+        /*var pai = 'images/' + v.hs + v.num + '.png';
+         $('<img>').attr("src",pai).prependTo($("#Table"))*/  //生成牌
+    })
 }
-function drawPaiToView(PaiBj,paiX,paiY){
-		var img1 = new Image();
-		img1.src = PaiBj;
-		img1.onload=function(){
-            ctxt.drawImage(img1,paiX,paiY,zonesWidth * 0.35,zonesHeight);
+
+function method1(arr){  
+            var arr1=[];    //定义一个临时数组  
+            for(var i = 0; i < arr.length; i++){    //循环遍历当前数组  
+                //判断当前数组下标为i的元素是否已经保存到临时数组  
+                //如果已保存，则跳过，否则将此元素保存到临时数组中  
+                if(arr1.indexOf(arr[i]) == -1){  
+                    arr1.push(arr[i]);  
+                }  
+            }  
+            return arr1.sort();  
+}  
+
+//计算玩家1或者电脑的得分
+function celeplay1(a){
+    if(a == "play1"){
+        var score = $(".play1Zone .play1Score").text();
+        var play1PaiLength = $(".play1 li").length;
+        var nowPaiNum =  parseInt($(".play1 li").eq(play1PaiLength - 1).attr("data-num"));
+    }else{
+        var score = $(".play2Zone .play2Score").text();
+        var play1PaiLength = $(".play2 li").length;
+        var nowPaiNum =  parseInt($(".play2 li").eq(play1PaiLength - 1).attr("data-num"));
+    }
+    console.log(score)
+    if(score.match(",")){
+        score = score.split(",")
+    }else{
+        score = [parseInt(score)];
+    }
+
+    //for(var i = 0;i<play1PaiLength;i++){
+        
+        if(play1PaiLength == 1){
+            if(nowPaiNum == 13 || nowPaiNum ==12 || nowPaiNum == 11){
+                nowPaiNum = 10;
+                score[0] = nowPaiNum;
+            }else if(nowPaiNum == 1){
+                score=[1,11]
+            }else{
+                score[0] = nowPaiNum;
+            }
+        }else{
+
+                if((nowPaiNum == 13) || (nowPaiNum ==12) || (nowPaiNum == 11)){
+                    nowPaiNum = 10;
+                    for(var i = 0;i<score.length;i++){
+                        score[i] = parseInt(score[i]) + nowPaiNum;
+                        if(score[i] > 21 && score.length>1){
+                            score.splice(i,1);
+                            i=i-1;
+                        }
+                    }
+                }else if(nowPaiNum == 1){
+                    console.log(nowPaiNum,score);
+                    var nowPaiNum1 = 1;
+                    var nowPaiNum2 = 11;
+                    var newarr = [];
+                   for(var i = 0;i<score.length;i++){
+                        var score1_1 = parseInt(score[i]) + nowPaiNum1;
+                        var score1_2 = parseInt(score[i]) + nowPaiNum2;
+                        if(score1_1 <= 21){
+                            newarr.push(score1_1);
+                        }
+                        if(score1_2 <= 21){
+                            newarr.push(score1_2);
+                        }
+                    }
+                    method1(newarr);
+                    score = newarr;
+
+                }else{
+                    console.log(nowPaiNum,score);
+                    for(var i = 0;i<score.length;i++){
+                        score[i] = parseInt(score[i]) + nowPaiNum;
+                        if(score[i] > 21 && (score.length>1)){
+                            score.splice(i,1);
+                            i=i-1;
+                        }
+                    }
+                    console.log("nowPaiNum",score);
+                }
+
+
         }
+      
+    //}
+
+    var score1 = "";
+    if(score.length > 1){
+        score1 = score.join(",");
+    }else{
+        score1 = score[0];
+    }
+
+    if(a == "play1"){
+        $(".play1Zone .play1Score").text(score1);
+    }else{
+        $(".play2Zone .play2Score").text(score1);
+    }
+
+    
 }
 
-//判断一方所得扑克牌的点数
-function celeCount(play){
-	var nowScore = 0;
-	//通过判断索要计算的玩家的身份，初始化要牌之前玩家的分数，
-	if(play == "computer"){
-		var scoreString = $(".ComputerScore span").text();
-		var nowPlayerArr = computerArr;
-	}else if(play == "play2"){
-		var scoreString = $(".PlayScore span").text();
-		var nowPlayerArr = play2Arr;
-	}
-	var nowScoreArr = [0];//储存相对应的玩家牌点数
-	$.each(nowPlayerArr,function(i,v){		
-		 if(nowPlayerArr[i].num == 1){	//如果当前数为1时   [1,2,5...] [5,2,1,6...]
-			var nowScore1 = 1; 
-			var nowScore2 = 11;
+//计算玩家二的得分
+function celeplay2(){
+    var score2 = 0;
+    var play2PaiLength = $(".play2 li").length;
 
-			var newArr = [];	
-			for(var m = 0;m < nowScoreArr.length;m++){
-				if(nowScoreArr.length == 1){   //前几次没有 1 出现 ，后来出现 1 例如：出现牌数[9,3,1]先前点数出现[12] 加后来点数1时，只保留没有超过21的结果;
-					if(nowScoreArr[m] + nowScore1 <= 21){
-						newArr.push(nowScoreArr[m] + nowScore1);
-					}
-					if(nowScoreArr[m] + nowScore2 <= 21){
-						newArr.push(nowScoreArr[m] + nowScore2);
-					}
-					
-				}else{                        //已经出现过1，又出现 1 的情况下 例如：出现牌数[9,1,1]先前点数出现[10,20] 加后来点数1时，[11,21,21,41]；
-					if(parseInt(nowScoreArr[m]) + parseInt(nowScore1) <= 21){
-						newArr.push(nowScoreArr[m] + nowScore1);
-					}else{
-						nowScoreArr.splice(m,1);
-						m = m - 1 ;	
-					}
-					if(parseInt(nowScoreArr[m]) + parseInt(nowScore2) <= 21){
-						newArr.push(nowScoreArr[m] + nowScore2);
-					}else{
-						nowScoreArr.splice(m,1);
-						m = m - 1 ;	
-					}	
-				}
-			}	
-			nowScoreArr =  $.unique(newArr).sort();
-		}else{ 		//若当前循环的为除1以外的其他数字时
-			var num;
-			if(nowPlayerArr[i].num == 11 || nowPlayerArr[i].num == 12 || nowPlayerArr[i].num == 13){
-				 num  = 10;       //若为11,12,13  则要加的值为10
-			}else{				  //若为除1，11,12,13之外，则要加的值为其本身
-				 num = nowPlayerArr[i].num;
-			}
-			for(var m = 0;m < nowScoreArr.length;m++){
-				if(nowScoreArr.length == 1){	//先前为出现过1，例如：出现牌数[9,2]先前点数出现[9] 加后来点数2时，直接相加；
-					if(play == "computer"){
-					}
-					nowScoreArr[m] = nowScoreArr[m] + num;
-				}else{
-					if(nowScoreArr[m] + num <= 21){ //先前出过A  例如：出现牌数[9,1,2]先前点数出现[10,21] 加后来点数2时，超过21的去掉；
-						nowScoreArr[m] = nowScoreArr[m] + num;
-					}else{
-						nowScoreArr.splice(m,1);
-						m = m - 1 ;	
-					}
-				}	
-				
-			}
-		}
-	})
+    for(var i = 0;i<play2PaiLength;i++){
+         var nowPaiNum =  parseInt($(".play2 li").eq(i).attr("data-num"));
+         if((nowPaiNum == 13) || (nowPaiNum ==12) || (nowPaiNum == 11)){
+            nowPaiNum = 10;
+        }
+        score2 = score2 + nowPaiNum;
+    }
 
-	return nowScoreArr.sort(sortNumber);
-}
-
-//判断电脑是否可以继续拿牌
-function judgeComputer(){
-	var computerScore =  celeCount("computer");
-	
-	
-		if(PaiArr[PaiArr.length-1].num == 13 || PaiArr[PaiArr.length-1].num == 12 || PaiArr[PaiArr.length-1].num == 11){
-			var num = 10;
-		}else{
-			var num = PaiArr[PaiArr.length-1].num;
-		}
-		if(computerScore[0] + num <= 21){
-
-			console.log("电脑要牌")
-
-			var lastNewImgCom = PaiArr[PaiArr.length - 1];
-			computerArr.push(lastNewImgCom);
-			var comLength = computerArr.length;
-			var PaiBjCom = "images/"+ computerArr[comLength-1].hs + computerArr[comLength-1].num +".png";
-			var paiXCom = zoneLeft * 4 + 0.5;
-			var paiYCom = zoneTop +0.5;
-			drawPaiToView(PaiBjCom,paiXCom + zoneLeft/2 * computerArr.length,paiYCom);		
-			PaiArr.splice(PaiArr.length-1,1);
-
-			console.log(197,PaiArr[PaiArr.length-1]); //下一张牌的点数
-
-			var comScore = celeCount("computer");
-			if(comScore.length == 1){
-				$(".ComputerScore span").text(comScore[0]);
-			}else{
-				comScore = comScore.join(",");
-				$(".ComputerScore span").text(comScore);
-			}
-
-		}else{
-
-			console.log("电脑不要牌")
-
-			computerFlag = false;
-
-			var comMax = computerScore.sort()[computerScore.length-1];
-			$(".ComputerScore span").text(computerScore[computerScore.length-1]);
-
-			if(!play2Flag){
-
-				var computerScore = parseInt($(".ComputerScore span").text());
-				var play2ScoreEnd = parseInt($(".PlayScore span").text());		
-
-
-			 	if(computerScore > play2ScoreEnd){
-					$(".title").show();
-					$(".playWin").text("电脑获胜");
-					$(".playTpeople").text("电脑:玩家 = " + computerScore + ":" + play2ScoreEnd);
-				}else if(computerScore < play2ScoreEnd){
-					$(".title").show();
-					$(".playWin").text("玩家获胜");
-					$(".playTpeople").text("电脑:玩家 = " + computerScore + ":" + play2ScoreEnd);
-				}else if(computerScore == play2ScoreEnd){
-					$(".title").show();
-					$(".playWin").text("此局为平局");
-					$(".playTpeople").text("电脑:玩家 = " + computerScore + ":" + play2ScoreEnd);
-				}
-		 
-			}
-		}
-	
-
-
-	if(!play2Flag && computerFlag){
-		judgeComputer();
-	}
+    $(".play2Zone .play2Score").text(score2);
 
 }
 
+//比较牌数大小
+function compare(){
+    var play1 = $("")
 
+    var score1 = $(".play1Zone .play1Score").text();
+    var score2 = $(".play2Zone .play2Score").text();
 
-function reset(){
-
-	ctxt.clearRect(0,0,canW,canH);
-
-	$(".ComputerScore span").text("");
-	$(".PlayScore span").text("");
-
-	PaiArr = []; //PaiArr = [{num:4,hs:"s"},{num:6,hs:"h"},...];
-	hs = ['h','b','s','k'];//花色代表  红桃：h  梅花：b  方块：s  黑桃：k
-	computerArr = [];//电脑的牌
-	play2Arr = [];//玩家的牌
-	computerFlag = true;//若为true，则表示电脑可以继续选牌；
-	play2Flag = true;//若为true，则表示玩家可以被点击
-
-	//绘制牌1的区域
-	var x1 = zoneLeft * 3 + 0.5 ;
-	var y1 = zoneTop + 0.5;
-	var tx1Y = zoneTop + zonesHeight/3;
-	makeZones(x1,y1);
-	ctxt.clearRect(zoneLeft,tx1Y,zoneLeft,zoneLeft);
-	makeTx("computer",zoneLeft,tx1Y,zoneLeft,zoneLeft);
-
-	//绘制发牌的区域
-	var xf = zoneLeft * 3 + 0.5;
-	var yf = (canH - zonesHeight - zoneTop) + 0.5;
-	var txfY = zoneTop * 2 + zonesHeight/3 * 4;
-	makeZones(xf,yf);
-	ctxt.clearRect(zoneLeft,txfY,zoneLeft,zoneLeft)
-	makeTx("game",zoneLeft,txfY,zoneLeft,zoneLeft);
-
-	//绘制牌2的区域
-	var x2 = zoneLeft * 3 + 0.5;
-	var y2 = (zoneTop * 2 + zonesHeight) +0.5;
-	var tx2Y = zoneTop * 2.5 + zonesHeight/3 * 7;
-	makeZones(x2,y2);
-	ctxt.clearRect(zoneLeft,tx2Y,zoneLeft,zoneLeft)
-	makeTx("user",zoneLeft,tx2Y,zoneLeft,zoneLeft);
-
-	$(".FaPaiBtns").css("top", txfY + zoneTop * 1.5);
-	$(".Play2Btns").css("top", tx2Y + zoneTop * 1.5);
-	//随机生成扑克牌组
-	makeRandomPai();
-	//绘制生成的扑克牌至发牌区域
-	/*$.each(PaiArr,function(i,v){*/
-	var PaiBj = "images/pokerFan.jpg";
-		var paiX = zoneLeft * 4 + 0.5;
-		var paiY = (zoneTop * 2 + zonesHeight) +0.5;
-	/*	drawPaiToView(PaiBj,paiX,paiY,i);	
-	})*/
-	drawPaiToView(PaiBj,paiX,paiY);	
+    if(score1 > 21){
+        return 1;
+    }else if(score2 > 21){
+        return 2;
+    }else{
+        return 0;
+    }
 
 }
 
+makePai()
+Draw(PaiArr);
 
 
+var flag1 = false; // 当前play1停止要牌
+var flag2 = false; // 当前play2停止要牌
+var play1 = true;  // 当前play1可以要牌
+var play2 = true;  // 当前play2可以要牌
 
-reset()
-//游戏开始的发牌
-$(".FaBtn").on("click",function(){
+//点击发牌以后执行的内容
+$(".FaPaiBtn").on("click",function(){
+    var PaiNum = $(".FaPai li").length;
+    
+    var newPai1 = 'url(images/' + $(".FaPai li").eq(PaiNum-1).attr("data-hs") + $(".FaPai li").eq(PaiNum-1).attr("data-num") + '.png)';
+    var newPai2 = 'url(images/' + $(".FaPai li").eq(PaiNum-2).attr("data-hs") + $(".FaPai li").eq(PaiNum-2).attr("data-num") + '.png)';
+    
+    var newhs1 =  $(".FaPai li").eq(PaiNum-1).attr("data-hs");
+    var newnum1 =  $(".FaPai li").eq(PaiNum-1).attr("data-num");
+    
+    var newhs2 =  $(".FaPai li").eq(PaiNum-2).attr("data-hs");
+    var newnum2 =  $(".FaPai li").eq(PaiNum-2).attr("data-num");
+    
+    var newPaiArr =  PaiArr.splice(0,2);
+    Draw(PaiArr);
+    
+    if(AI){
+        var newPai1 = 'url(images/pokerFan.jpg)';
+        $('<li>').attr({"data-num":newnum1,"data-hs":newhs1}).css("backgroundImage",newPai1).appendTo($(".play1"));
+    }else{
+        $('<li>').attr({"data-num":newnum1,"data-hs":newhs1}).css("backgroundImage",newPai1).appendTo($(".play1"));
+    }
+    
+    $('<li>').attr({"data-num":newnum2,"data-hs":newhs2}).css("backgroundImage",newPai2).appendTo($(".play2"));
 
-	console.log("第一张牌的点数",PaiArr[PaiArr.length-1]);//下一张牌的点数
+    celeplay1("play1"); 
+    celeplay1("play2"); 
 
-	$(".Play2Btns").show();//play2的游戏按钮显示
-	$(this).hide();		   //隐藏发牌按钮
+    $(".FaPaiBtn").hide();
 
-	var lastNewImgCom = PaiArr[PaiArr.length - 1];
-	computerArr.push(lastNewImgCom);
-	var comLength = computerArr.length;
-	var PaiBjCom = "images/"+ computerArr[comLength-1].hs + computerArr[comLength-1].num +".png";
-	var paiXCom = zoneLeft * 4 + 0.5;
-	var paiYCom = zoneTop +0.5;
-	drawPaiToView(PaiBjCom,paiXCom + zoneLeft/2 * computerArr.length,paiYCom);	
-	var comScore = celeCount("computer");
-	if(comScore.length == 1){
-		$(".ComputerScore span").text(comScore[0]);
-	}else{
-		comScore = comScore.join(",");
-		$(".ComputerScore span").text(comScore);
-	}
+    if(!AI){
+        $(".play1Score").show();
+        $(".play1Btn").show();
+        $(".play2Btn").show();
+    }else{
+        $(".play1Score").hide();
+        $(".play1Btn").hide();
+        $(".play2Btn").show();
+        $(".play2Hit").removeClass("disabled");
 
-	console.log("第二张牌的点数",PaiArr[PaiArr.length-2]);//下一张牌的点数
-
-	var lastNewImgPlay = PaiArr[PaiArr.length - 2];
-	play2Arr.push(lastNewImgPlay);
-	var play2Length = play2Arr.length;
-	var PaiBjPlay2 = "images/"+ play2Arr[play2Length-1].hs + play2Arr[play2Length-1].num +".png";
-	var paiXPlay2 = zoneLeft * 4 + 0.5;
-	var paiYPlay2 = (zoneTop * 3 + zonesHeight*2) +0.5;
-	drawPaiToView(PaiBjPlay2,paiXPlay2 + zoneLeft/2 * play2Arr.length,paiYPlay2);	
-	var play2Score = celeCount("play2");
-	if(play2Score.length == 1){
-		$(".PlayScore span").text(play2Score[0]);
-	}else{
-		play2Score = play2Score.join(",");
-		$(".PlayScore span").text(play2Score);
-	}
-
-	PaiArr.splice(PaiArr.length-2,2);
-	
-	console.log(289,PaiArr[PaiArr.length-1]);//下一张牌的点数
-
-	if(computerFlag){
-			console.log(290,"进行判断电脑是否要牌");
-			judgeComputer();
-	}
-
-})
-
-$(".HitBtn").on("click",function(){
-	if(play2Flag){
-		var lastNewImgPlay = PaiArr[PaiArr.length - 1];
-		play2Arr.push(lastNewImgPlay);
-		var play2Length = play2Arr.length;
-		var PaiBjPlay2 = "images/"+ play2Arr[play2Length-1].hs + play2Arr[play2Length-1].num +".png";
-		var paiXPlay2 = zoneLeft * 4 + 0.5;
-		var paiYPlay2 = (zoneTop * 3 + zonesHeight*2) +0.5;
-		drawPaiToView(PaiBjPlay2,paiXPlay2 + zoneLeft/2 * play2Arr.length,paiYPlay2);
-
-		PaiArr.splice(PaiArr.length-1,1);
-
-			console.log(306,PaiArr[PaiArr.length-1]);
-		if(computerFlag){
-			console.log(290,"进行判断电脑是否要牌");
-			judgeComputer();
-		}
-
-		var play2Score = celeCount("play2");
-		$(".PlayScore span").text(play2Score);
-
-		if(play2Score.length == 1 && play2Score[0] > 21){
-			$(".title").show();
-			$(".playWin").text("玩家的点数已爆");
-			$(".playTpeople").text("玩家的点数为:" + play2Score);
-			 audio.pause();
-    		audio.currentTime = 0;
-    		$(audio).attr("src","audio/loseMusic.mp3");
-    		audio.play();
-			return;
-		}		
-	}else{
-		$(".title").show();
-	}	
- 
-})
-
-$(".Standtn").on("click",function(){
-	play2Flag = false;
-	var play2Score = celeCount("play2");
-	$(".HitBtn").off("click",function(){
-		return false;
-	});	
-	if(play2Score.length > 1){
-	    $(".PlayScore span").text(play2Score[play2Score.length-1]);
-	}else{
-	    $(".PlayScore span").text(play2Score[0]);
-	}
-	if(computerFlag){
-		judgeComputer();
-	}else{
-
-		var computerScore = parseInt($(".ComputerScore span").text());
-		var play2ScoreEnd = parseInt($(".PlayScore span").text());		
-
-
-	 	if(computerScore > play2ScoreEnd){
-			$(".title").show();
-			$(".playWin").text("电脑获胜");
-			$(".playTpeople").text("电脑:玩家 = " + computerScore + ":" + play2ScoreEnd);
-			 audio.pause();
-    		audio.currentTime = 0;
-    		$(audio).attr("src","audio/loseMusic.mp3");
-    		audio.play();
-		}else if(computerScore < play2ScoreEnd){
-			$(".title").show();
-			$(".playWin").text("玩家获胜");
-			$(".playTpeople").text("电脑:玩家 = " + computerScore + ":" + play2ScoreEnd);
-			 audio.pause();
-    		audio.currentTime = 0;
-    		$(audio).attr("src","audio/winMusic.mp3");
-    		audio.play();
-		}else if(computerScore == play2ScoreEnd){
-			$(".title").show();
-			$(".playWin").text("此局为平局");
-			$(".playTpeople").text("电脑:玩家 = " + computerScore + ":" + play2ScoreEnd);
-			 audio.pause();
-    		audio.currentTime = 0;
-    		$(audio).attr("src","audio/loseMusic.mp3");
-    		audio.play();
-		}
- 
-	}
+            judgeComScore();
+        
+    }
 
 })
 
-$(".playTcomputer").on("click",function(){
-	$(".title").hide();
-	reset();
-	$(".FaBtn").show();
-	$(".Play2Btns").hide();
-	 audio.pause();
-    audio.currentTime = 0;
-    $(audio).attr("src","audio/playMusic.mp3");
-    audio.play();
+
+//某一方选择要牌
+$(".playHit").on("click",function(){
+    var PaiNum = $(".FaPai li").length;
+
+    var newhs =  $(".FaPai li").eq(PaiNum-1).attr("data-hs");
+    var newnum =  $(".FaPai li").eq(PaiNum-1).attr("data-num");
+
+    var newPai = 'url(images/' + $(".FaPai li").eq(PaiNum-1).attr("data-hs") + $(".FaPai li").eq(PaiNum-1).attr("data-num") + '.png)';
+
+
+    if($(this).hasClass("disabled")){
+        return;
+    }else if($(this).hasClass("play1Hit")){
+        if(!flag1){
+            var play1left = $(".play1 li").length * 0.25; 
+            $('<li>').attr({"data-num":newnum,"data-hs":newhs}).css({"backgroundImage":newPai,"left":play1left+"rem"}).appendTo($(".play1"));
+           celeplay1("play1");
+            if($(".play2Btn").css('display') != 'none'){
+                $(this).addClass("disabled");
+                $(".play2Hit").removeClass("disabled");
+            }
+            var newPaiArr =  PaiArr.splice(0,1);
+            Draw(PaiArr);       
+        }
+    }else if($(this).hasClass("play2Hit")){
+        if(!flag2){
+            var play2left = $(".play2 li").length * 0.25; 
+            $('<li>').attr({"data-num":newnum,"data-hs":newhs}).css({"backgroundImage":newPai,"left":play2left+"rem"}).appendTo($(".play2"));
+            celeplay1("play2");      
+            if($(".play1Btn").css('display') != 'none'){
+                $(this).addClass("disabled");
+                $(".play1Hit").removeClass("disabled");
+            }     
+        }
+        var newPaiArr =  PaiArr.splice(0,1);
+        Draw(PaiArr);
+            
+    }
+
+  
+ if(compare() == 1){
+        $(".title").show();
+         if(AI){
+                     $(".again .playWin").text("电脑牌爆");
+                }else{
+                     $(".again .playWin").text("玩家一牌爆");
+                }
+        audio.pause();
+    	audio.currentTime = 0;
+    	$(audio).attr("src","audio/winMusic.mp3");
+    	audio.play();
+        $(".playBtn").hide();
+        $(".play1Score").show();
+        showPlay1()
+    }else if(compare() == 2){
+        $(".title").show();
+        $(".play1Score").show();
+        $(".again .playWin").text("玩家二牌爆");
+        audio.pause();
+    	audio.currentTime = 0;
+    	$(audio).attr("src","audio/loseMusic.mp3");
+    	audio.play();
+        $(".playBtn").hide();
+        showPlay1()
+    }else if(AI && !flag1){
+            judgeComScore();
+        }
+    if(!AI){
+                $(".common.playTpeople").text("再来一局");
+                $(".common.playTcomputer").text("电脑对战");
+            }else{
+                $(".common.playTpeople").text("双人对战");
+                $(".common.playTcomputer").text("再来一局");
+    }
+
 })
 
-$(".playPaused").on("click",function(){
-	$(".title").hide();
+//当某一方选择停止要牌
+$(".playStand").on("click",function(){
+    if($(this).hasClass("play1Stand")){
+        flag1 = true;
+        $(".playHit").off("click",false);
+        $(".play1Btn").hide();
+         if($(".play2Btn").css("display") != "none"){
+            play2 = true;
+            $(".play2Hit").removeClass("disabled"); 
+        }
+        var score = $(".play1Zone .play1Score").text();
+        if(score.match(",")){
+            score = score.split(",")
+        }else{
+            score = [parseInt(score)];
+        }
+        if(score.length > 1){
+            $(".play1Zone .play1Score").text(score[score.length-1]);
+        }else{
+            $(".play1Zone .play1Score").text(score[0]);
+        }
+    }else if($(this).hasClass("play2Stand")){
+        flag2 = true;
+        $(".play2Btn").hide();
+        if($(".play1Btn").css("display") != "none"){
+            play1 = true;
+            $(".play1Hit").removeClass("disabled");
+        }
+
+        var score = $(".play2Zone .play2Score").text();
+        console.log(347,score);
+        if(score.match(",")){
+            score = score.split(",")
+        }else{
+            score = [parseInt(score)];
+        }
+        console.log(353,score);
+        if(score.length > 1){
+            $(".play2Zone .play2Score").text(score[score.length-1]);
+        }else{
+            $(".play2Zone .play2Score").text(score[0]);
+        }
+
+        if(AI && !flag1){
+            judgeComScore();
+        }
+    }
+if(flag1 && flag2){
+        if(compare() == "0"){
+            var score1 = parseInt($(".play1Zone .play1Score").text());
+            var score2 = parseInt($(".play2Zone .play2Score").text());
+            $(".title").show();
+            $(".playBtn").hide();
+            $(".play1Score").show();
+            showPlay1();
+            if(score1 > score2){
+                console.log(score1,score2);
+                if(AI){
+                    $(".again .playWin").text("电脑胜利");
+                    
+                }else{
+                    $(".again .playWin").text("玩家一胜利");
+
+                }
+				audio.pause();
+    			audio.currentTime = 0;
+    			$(audio).attr("src","audio/loseMusic.mp3");
+    			audio.play();
+                
+                
+                
+            }else if(score1 < score2){
+                //$(".title").show();
+                $(".again .playWin").text("玩家二胜利");
+                	audio.pause();
+                	audio.currentTime = 0;
+                    $(audio).attr("src","audio/winMusic.mp3");
+                    audio.play();
+                //$(".playBtn").hide();
+            }else{
+                //$(".title").show();
+                $(".again .playWin").text("此局为平局");
+                audio.pause();
+                audio.currentTime = 0;
+                $(audio).attr("src","audio/winMusic.mp3");
+                audio.play();
+               // $(".playBtn").hide();
+            }
+
+            if(!AI){
+                $(".common.playTpeople").text("再来一局");
+                $(".common.playTcomputer").text("电脑对战");
+            }else{
+                $(".common.playTpeople").text("双人对战");
+                $(".common.playTcomputer").text("再来一局");
+            }
+        }
+    }
+})
+
+//
+$(".common").click(function(){
+    $(".title").hide();
+    $(".play1").html("");
+    $(".play2").html("");
+    $(".FaPai").html("");
+    makePai();
+    Draw(PaiArr);
+    $(".FaPaiBtn").show();
+    flag1 = false;
+    flag2 = false; 
+    play1 = true;
+    play2 = true;
+    AI = false; 
+    $(".play1Score").text("");
+    $(".play2Score").text("");
+    $(".play1Hit").removeClass("disabled");
+    $(".play2Hit").addClass("disabled");
+    if($(this).hasClass("playPaused")){
+        $("#Table").hide();
+        $(".gameLoading").show();
+        audio.pause();
+    	audio.currentTime = 0;
+    	$(audio).attr("src","audio/playMusic.mp3");
+    	audio.play();
+    }
+    if($(this).hasClass("playTpeople")){
+		audio.pause();
+    	audio.currentTime = 0;
+    	$(audio).attr("src","audio/playMusic.mp3");
+    	audio.play();
+    }
+    if($(this).hasClass("playTcomputer")){
+        AI = true; 
+        audio.pause();
+    	audio.currentTime = 0;
+    	$(audio).attr("src","audio/playMusic.mp3");
+    	audio.play();
+    }
+})
+
+$(".gameBtnOfPeople").click(function(){
+    $(".gameLoading").hide();
+    $("#Table").show();
+    AI = false;  
+    $(".play1Score").show();
+    $(".play1Score").show();
+    $(".play1Name").text("玩家一");
+    $(".play2Name").text("玩家二");
+  
+})
+$(".gameBtnOfCom").click(function(){
+    AI = true;
+    $(".gameLoading").hide();
+    $("#Table").show();
+    $(".play1Score").hide();
+    $(".play1Score").hide();
+    $(".play1Name").text("电脑");
+    $(".play2Name").text("玩家");
+})
+
+//判断电脑是否需要牌
+function judgeComScore(){
+    var ComputerScore = parseInt($(".play1Zone .play1Score").text());
+    var PaiNum = $(".FaPai li").length;
+
+    var nextNum = parseInt($(".FaPai li").eq(PaiNum-1).attr("data-num"));
+    
+    var newhs =  $(".FaPai li").eq(PaiNum-1).attr("data-hs");
+    var newnum =  $(".FaPai li").eq(PaiNum-1).attr("data-num");
+
+    var newPai = 'url(images/pokerFan.jpg)';
+
+    if(ComputerScore + nextNum <= 21){
+        var play1left = $(".play1 li").length * 0.25;
+        $('<li>').attr({"data-num":newnum,"data-hs":newhs}).css({"backgroundImage":newPai,"left":play1left+"rem"}).appendTo($(".play1"));
+   
+        celeplay1("play1"); 
+        var newPaiArr =  PaiArr.splice(0,1);
+        Draw(PaiArr);
+    }else{
+        play1 = true;
+        flag1 = true;
+    }
+
+    if(flag2 && !flag1){
+        judgeComScore();
+    }
+}
+
+//结果显示后，显示电脑方对应的牌数
+function showPlay1(){
+    $(".play1 li").each(function(i,v){
+
+        var newhs =  $(".play1 li").eq(i).attr("data-hs");
+        var newnum =  $(".play1 li").eq(i).attr("data-num");
+
+        var newPai = 'url(images/' + $(".play1 li").eq(i).attr("data-hs") + $(".play1 li").eq(i).attr("data-num") + '.png)';
+
+        $(v).css({"backgroundImage":newPai});
+
+
+    })
+}
+
+$(".gameBtnOfRules").click(function(){
+	$(".gameLoading").hide();
+	$(".rules").show();
+})
+
+$(".rulesClose").click(function(){
+	$(".gameLoading").show();
+	$(".rules").hide();
 })
