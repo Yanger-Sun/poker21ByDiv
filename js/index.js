@@ -80,14 +80,12 @@ var num = 0;
         {
 			$("#lodingnum").html("100%");
 			document.getElementById('loading').style.display="none";
-				
+		document.addEventListener("WeixinJSBridgeReady", function () { 
+					if(document.getElementById('loading').style.display=="none"){
+        document.getElementById('audioPlay').play(); 
+					}
+				},false)	
 		
-	        document.addEventListener("WeixinJSBridgeReady", function () { 
-				if(document.getElementById('loading').style.display=="none"){
-  					//机器人 及 其右侧标题 处
-				}
-       
-    }, false); 
 			
 		
 			
